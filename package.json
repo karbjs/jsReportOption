@@ -1,0 +1,25 @@
+{
+  "name": "jsReportOption",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "http-errors": "~1.6.3",
+    "ini": "^3.0.1",
+    "jquery": "^3.7.1",
+    "jsdom": "^24.0.0",
+    "morgan": "~1.9.1",
+    "node-cmd": "^5.0.0",
+    "pptxgenjs": "^3.12.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

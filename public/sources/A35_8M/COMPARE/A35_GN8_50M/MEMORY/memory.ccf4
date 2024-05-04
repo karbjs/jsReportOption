@@ -1,0 +1,6 @@
+[Inspections]
+Load=Map Check,Result_Show
+[Map Check]
+EnableInspection=TRUE
+[Result_Show]
+EnableInspection=TRUE

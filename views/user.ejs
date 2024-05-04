@@ -1,0 +1,134 @@
+<%- include('./partials/header') %>
+  	<main>
+		<div id="main_content" class='main-conatiner'>
+    		<h2 class="main-title"><%= title %></h2>
+			<div class='container'>
+				<ul id="jbtreeview">
+					<% var htmlData ="";
+					if(SConfig.iData.aGroup !==undefined){ 
+						for(var g = 0; g < SConfig.iData.aGroup.length; g++ ){ 
+							var iGroup = SConfig.iData.aGroup[g];
+							htmlData +='<li><span class="box">'+iGroup+'</span>';
+							if(SConfig.iData[iGroup]!== undefined && SConfig.iData[iGroup].Teams!==undefined){
+								var aTeams = SConfig.iData[iGroup].Teams;
+								htmlData +='<ul class="nested">';
+								for(var t in aTeams){
+									var Team = aTeams[t];
+									if(Team.toLocaleLowerCase()==="normal"){
+										if(SConfig.iData[iGroup][Team]!==undefined){
+											htmlData +='<li class="pf-lists">';
+											var hasSupport = 0;
+											for(var p in SConfig.iData[iGroup][Team]){
+												var member = SConfig.iData[iGroup][Team][p];
+												//console.log(member);
+												if(member.Position.toLocaleLowerCase() === "support"){
+													hasSupport = 1;
+													htmlData += layoutProfile(member);
+												}
+											}
+											if(hasSupport===1) htmlData +='<div class="pf-item-space"></div>';
+											var hasLeader = 0;
+											for(var p in SConfig.iData[iGroup][Team]){
+												var member = SConfig.iData[iGroup][Team][p];
+												//console.log(member);
+												if(member.Position.toLocaleLowerCase() === "leader"){
+													hasLeader = 1;
+													htmlData += layoutProfile(member);
+												}
+											}
+											if(hasLeader===1) htmlData +='<div class="pf-item-space"></div>';
+											for(var p in SConfig.iData[iGroup][Team]){
+												var member = SConfig.iData[iGroup][Team][p];
+												//console.log(member);
+												if(member.Position.toLocaleLowerCase() === "staf"){
+													htmlData += layoutProfile(member);
+												}
+											}
+											htmlData +='</li>';
+										}
+									}else{
+										htmlData +='<li><span class="box">'+Team+'</span>';
+										//console.log(SConfig.iData[iGroup][Team]);
+										if(SConfig.iData[iGroup][Team]!==undefined){
+											htmlData +='<ul class="nested">';
+											htmlData +='<li class="pf-lists">';
+											var hasSupport = 0;
+											for(var p in SConfig.iData[iGroup][Team]){
+												var member = SConfig.iData[iGroup][Team][p];
+												//console.log(member);
+												if(member.Position.toLocaleLowerCase() === "support"){
+													hasSupport = 1;
+													htmlData += layoutProfile(member);
+												}
+											}
+											if(hasSupport===1) htmlData +='<div class="pf-item-space"></div>';
+											var hasLeader = 0;
+											for(var p in SConfig.iData[iGroup][Team]){
+												var member = SConfig.iData[iGroup][Team][p];
+												//console.log(member);
+												if(member.Position.toLocaleLowerCase() === "leader"){
+													hasLeader = 1;
+													htmlData += layoutProfile(member);
+												}
+											}
+											if(hasLeader===1) htmlData +='<div class="pf-item-space"></div>';
+											for(var p in SConfig.iData[iGroup][Team]){
+												var member = SConfig.iData[iGroup][Team][p];
+												//console.log(member);
+												if(member.Position.toLocaleLowerCase() === "staf"){
+													htmlData += layoutProfile(member);
+												}
+											}
+											htmlData +='</li>';
+											htmlData +='</ul>';
+										}
+									}
+									
+									htmlData +='</li>';
+								}
+								htmlData +='</ul>';
+							}
+							htmlData +='</li>';	
+						}
+					} %>
+					<%- htmlData %>
+				</ul>
+			</div>
+		</div>
+  	</main>
+  	<footer >
+  		<%- include('./partials/footer') %>
+  	</footer>
+</body>
+</html>
+<% function layoutProfile(member){
+	var htmlData ='<div class="pf-item">';
+		htmlData +='<div class="pf-item-avatar">';
+		htmlData +='<img src="'+member.iImage+'"/>';
+		if(member.Position.toLocaleLowerCase() === "support"){
+			htmlData +='<span class="pf-spam pf-spam-sp">Support</span>';
+		}else if(member.Position.toLocaleLowerCase() === "leader"){
+			htmlData +='<span class="pf-spam pf-spam-ld">Leader</span>';
+		}
+		htmlData +='</div>';
+		htmlData +='<div class="pf-item-info text-center">';
+				htmlData +=''+member.Address+'';
+		htmlData +='</div>';
+		htmlData +='<div class="pf-item-info">';
+			htmlData +='<div class="pf-item-label">Full Name: </div><div class="pf-item-value">'+member.FullName+'</div>';
+		htmlData +='</div>';
+		htmlData +='<div class="pf-item-info">';
+			htmlData +='<div class="pf-item-label">Date of Birth: </div><div class="pf-item-value">'+member.Dateofbirth+'</div>';
+		htmlData +='</div>';
+		htmlData +='<div class="pf-item-info">';
+			htmlData +='<div class="pf-item-label">Phone Number: </div><div class="pf-item-value">'+member.Phone+'</div>';
+		htmlData +='</div>';
+		htmlData +='<div class="pf-item-info">';
+			htmlData +='<div class="pf-item-label">Email: </div><div class="pf-item-value">'+member.Email+'</div>';
+		htmlData +='</div>';
+		htmlData +='<div class="pf-item-info">';
+			htmlData +='<div class="pf-item-label">Start Work: </div><div class="pf-item-value">'+member.Startwork+'</div>';
+		htmlData +='</div>';
+	htmlData +='</div>';
+return htmlData;
+} %>
