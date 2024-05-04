@@ -1,0 +1,61 @@
+
+
+<h2 class="main-title"><%= title %></h2>
+<div class='container'>
+	<div class='row mb-3'>
+		<div class="mb-3 col-md-4">
+			<label class="form-label" for="sl-models">Select One Model</label>
+			<select id="sl-models" value={dfConf} class="form-select">
+				<option value="">--Select one--</option>
+				<% for(var i = 0; i < SConfig.iModels.length; i++ ){ 
+					var selected = (SConfig.iModels[i] == SConfig.iMDefault) ? "selected" : ""; %>
+				<option value="<%=SConfig.iModels[i] %>" <%= selected %>>
+					<%=SConfig.iModels[i] %>
+				</option>
+				<% } %>
+			</select>
+		</div>
+		<div class="mb-3 col-md-4">
+			<label class="form-label" for="sl-type-report">Select Type Report</label>
+			<select id="sl-type-report" value="" class="form-select">
+				<option  value="">--Only Main--</option>
+				<option value="ext" <%=("ext" == SConfig.iPDefault) ? "selected" : ""; %>>--All Extension--</option>
+				<option value="compare" <%=("compare" == SConfig.iPDefault) ? "selected" : ""; %>>--Compare Spec--</option>
+				<% for(var i = 0; i < SConfig.iProcess.length; i++ ){ 
+					if(SConfig.iProcess[i].toLocaleLowerCase()!=="compare"){
+					var selected = (SConfig.iProcess[i] == SConfig.iPDefault) ? "selected" : ""; %>
+				<option value="<%=SConfig.iProcess[i] %>" <%= selected %>>
+					<%=SConfig.iProcess[i] %>
+				</option>
+					<% }
+			 	} %>
+			</select>
+		</div>
+		<div class="mb-3 col-md-4">
+			<label class="form-label" for="btn-load-report">Loading Type</label>
+			<button class="form-control btn btn-primary" id="btn-load-report"><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> Call</button>
+		</div>
+		<div class="fb-item-action">
+			<button type="button" class="btn btn-primary " id="btn-mreport"><i class="fa fa-download" aria-hidden="true"></i> Make Report</button>
+			<button type="button" class="btn btn-primary" id="btn-mtranslate"><i class="fa fa-language" aria-hidden="true"></i> Translate</button>
+		</div>
+	</div>
+	<div class='row' id="load-image-Opt">
+		<table id="example" class="table table-striped">
+			<thead>
+				<tr>
+					<th>Model</th>
+					<th>Mega pixel</th>
+					<th>Process</th>
+					<th>Option</th>
+					<th>Function</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="5">Click to Translate for loading...</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title><%= title %></title>
+   <!-- JQuery -->
+   <script src="/libs/jquery/dist/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+   <!-- Bootstrap & Bootswatch -->
+   <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+   <script src="/libs/bootstrap/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   
+   <!-- Fontawesome icons -->
+   <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css" crossorigin="anonymous" />
+   <% if(title == "Report options"){ %>
+   <!-- DataTable -->
+   <link rel="stylesheet" href="/libs/jquery-datatables-editable/dataTables.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+   <script src="/libs/jquery-datatables-editable/jquery.dataTables.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <!-- DataTable Buttons-->
+   <script src="/libs/jquery-datatables-editable/dataTables.buttons.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="/libs/jquery-datatables-editable/buttons.colVis.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="/libs/jquery-datatables-editable/buttons.flash.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="/libs/jquery-datatables-editable/buttons.html5.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="/libs/jquery-datatables-editable/buttons.print.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <% } %>
+
+   <!-- toast-master -->
+   <link rel="stylesheet" href="/libs/toast-master/css/jquery.toast.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+   <script src="/libs/toast-master/js/jquery.toast.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+   <!-- CSS link (loading Semantic UI from a CDN) -->
+   <!-- <script src="/libs/jblibs.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+   <script src="/javascripts/custom.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <link rel="stylesheet" href='/stylesheets/style.css' crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <div class="main-menu ui inverted menu">
+            <div>
+                <a class="item <%= (title == 'Report options')? 'active': '' %>" href="/">Home</a>
+                <a class="item <%= (title == 'R&D Profiles')? 'active': '' %>" href="/users">Camera</a>
+            </div>
+        </div>
+    </header>
