@@ -72,7 +72,16 @@ function sortProcess(arProcess){
       cProcess = cOIS;
       console.log(cProcess+":"+jpre);
   }
-  
+  if(iProcess.indexOf("MF&OTP") !== -1){
+    if(cProcess > 0){
+        cOTP = cProcess;
+    }
+    jpre = "MF&OTP";
+    OjProcess = cPosition(OjProcess, jpre, cProcess); 
+    cOTP++;
+    cProcess = cOTP;
+    console.log(cProcess+":"+jpre);
+}
   if(iProcess.indexOf("OTP") !== -1){
       if(cProcess > 0){
           cOTP = cProcess;
@@ -133,6 +142,16 @@ function sortProcess(arProcess){
       cProcess = cDFa;
       console.log(cProcess+":"+jpre);
   }
+  if(iProcess.indexOf("OTP&DF") !== -1){
+    if(cProcess > 0 ){
+        cDFb= cProcess;
+    }
+    jpre = "OTP&DF";
+    OjProcess = cPosition(OjProcess, jpre, cProcess); 
+    cDFb++;
+    cProcess = cDFb;
+    console.log(cProcess+":"+jpre);
+}
   if(iProcess.indexOf("DF(SUB)") !== -1){
       if(cProcess > 0 ){
           cDFb= cProcess;
@@ -210,40 +229,48 @@ var jbuild = {
       const syncDir = cmd.runSync('start /B CMD /C CALL '+Spath+'//convertJPG.bat');
       console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       for(var i=0;i<modules.length; i++){
-          const PPath = Path.resolve(__dirname,jSpath+modules[i]);
-          const iName = modules[i].split("_").slice(0, -1).join("_");
-          const iSize = modules[i].split("_").pop();
-          cmd.runSync('@copy "'+Spath+'\\setup.ini" "'+PPath+'"');
-          //console.log('@copy "'+Spath+'//setup.ini" "'+PPath+'"');
-          var iProcess = getDirectories(PPath);
+            const PPath = Path.resolve(__dirname,jSpath+modules[i]);
+            const iName = modules[i].split("_").slice(0, -1).join("_");
+            const iSize = modules[i].split("_").pop();
+            cmd.runSync('@copy "'+Spath+'\\setup.ini" "'+PPath+'"');
+            //console.log('@copy "'+Spath+'//setup.ini" "'+PPath+'"');
+            var iProcess = getDirectories(PPath);
 
-          var iSetup = ini.parse(fs.readFileSync(PPath+'\\setup.ini', 'utf-8'));
-          iSetup.Info.ModelName = iName;
-          iSetup.Info.Size = iSize;
-          iSetup.Info.Type = "Single";
-          if(iSize.toLocaleUpperCase() === "DUAL" || iSize.toLocaleUpperCase() === "TRIP"){
-              iSetup.Info.Size = "";
-              iSetup.Info.Type = iSize;
-          }
-          console.log("Model Options:"+iName+"_"+iSize);
-          var oProcess = sortProcess(iProcess);
-          console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-          //console.log(Object.values(oProcess));
-          iSetup.Info.Process= Object.values(oProcess).join(", ");
-          //console.log(iSetup); 
-          for(var ip=0;ip<iProcess.length; ip++){
+            var iSetup = ini.parse(fs.readFileSync(PPath+'\\setup.ini', 'utf-8'));
+            iSetup.Info.ModelName = iName;
+            iSetup.Info.Size = iSize;
+            iSetup.Info.Type = "Single";
+            iSetup.Info.FitType = 0;
+            if(iSize.toLocaleUpperCase() === "DUAL" || iSize.toLocaleUpperCase() === "TRIP"){
+                iSetup.Info.Size = "";
+                iSetup.Info.Type = iSize;
+            }
+            console.log("Model Options:"+iName+"_"+iSize);
+            var oProcess = sortProcess(iProcess);
+            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            //console.log(Object.values(oProcess));
+            iSetup.Info.Process= Object.values(oProcess).join(", ");
+            //console.log(iSetup); 
+            for(var ip=0;ip<iProcess.length; ip++){
               var iProc = iProcess[ip].toLocaleUpperCase();
               var iPpath = PPath+"\\"+iProc;
               var CCF4 = getInfoFile(iPpath)[0];
               //console.log(CCF4);
               var ojPush = {};
               if(CCF4!==undefined && CCF4 !==""){
-                  ojPush = {"isMain":0,"CCFN":""};
-                  if(iProc==="MF" || iProc==="MF(MAIN)" || iProc==="MF(SUB)" || iProc==="OIS"
+                  ojPush = {"isMain":0, "isFit": 0,"CCFN":""};
+                  if(iProc==="MF" || iProc==="MF&OTP" || iProc==="MF(MAIN)" || iProc==="MF(SUB)" || iProc==="OIS"
                   || iProc==="OTP" || iProc==="PDAF" || iProc==="PDAF(MAC)" || iProc==="PDAF(INF)" || iProc==="DUALCAL" || iProc==="DUAL"
-                  || iProc==="DF"  || iProc==="DF(MAIN)" || iProc==="DF(SUB)" || iProc==="DF1" || iProc==="DF2"
+                  || iProc==="DF" || iProc==="OTP&DF"  || iProc==="DF(MAIN)" || iProc==="DF(SUB)" || iProc==="DF1" || iProc==="DF2"
                   || iProc==="MEMORY"){
                       ojPush.isMain = 1;
+                      if(iProc==="MF&OTP"){
+                        ojPush.isFit = 1;
+                        iSetup.Info.FitType = 1;
+                      }else if(iProc==="OTP&DF"){
+                        ojPush.isFit = 2;
+                        iSetup.Info.FitType = 2;
+                      }
                   }
                   ojPush.CCFN = CCF4;
                   iSetup[iProc] = ojPush;
@@ -272,11 +299,35 @@ var jbuild = {
 
 
               
-          }
+            }
+
+            if(iSetup.Info.FitType != 0){
+                
+                for(var ip=0;ip<iProcess.length; ip++){
+                    var iProc = iProcess[ip].toLocaleUpperCase();
+                    var ojPush = iSetup[iProc];
+                    if(iSetup.Info.FitType == 1){
+                        if(iProc==="MF&OTP" || iProc==="DF" || iProc==="DF(MAIN)" || iProc==="DF(SUB)" || iProc==="DF1" || iProc==="DF2" || iProc==="MEMORY"){
+                            ojPush.isFit = 1;
+                        }else{
+                            ojPush.isFit = 0;
+                        }
+                    }else if(iSetup.Info.FitType == 2){
+                        if(iProc==="MF" || iProc==="MF(MAIN)" || iProc==="MF(SUB)" || iProc==="OIS"  || iProc==="OTP&DF" || iProc==="MEMORY"){
+                            ojPush.isFit = 2;
+                        }else{
+                            ojPush.isFit = 0;
+                        }
+                    }else{
+                        ojPush.isFit = 0;
+                    }
+                    iSetup[iProc] = ojPush;
+                }
+            }
           //console.log(iSetup);
           fs.writeFileSync(PPath+'\\setup.ini', ini.stringify(iSetup));
           build = 1;
-      }
+        }
       cmd.runSync('@echo on');
     },
 

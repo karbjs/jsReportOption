@@ -480,7 +480,7 @@ var Libs = {
         var lProcess = [];
         for(var i=0; i< iProcess.length; i++){
             var sPro = iProcess[i], iImages = {}, kImages = [];
-            var isAllProces = (gProcess=="" && iInfo[sPro].isMain==1);
+            var isAllProces = (gProcess=="" && iInfo[sPro].isMain==1 && iInfo[sPro].isFit == iInfo.Info.FitType);
             var isExtProces = (gProcess=="ext" && sPro.toLocaleLowerCase()!="compare" && iInfo[sPro].isMain==0);
             if( isAllProces || isExtProces || gProcess ==sPro){
                 //console.log(iInfo[sPro].isMain);
